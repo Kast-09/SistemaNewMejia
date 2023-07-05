@@ -1,0 +1,32 @@
+﻿<div id="modalNuevoTipoProducto" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: black;">
+                <h4 class="modal-title" style="color:white">Insertar Nuevo Tipo</h4>
+            </div>
+            <section>
+                <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b id="respuestaTipo"></b></div>
+            </section>
+            <div class="modal-body">
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="tipoNuevo">Tipo Nuevo: </label>
+                    <input type="text" name="tipoNuevo" id="tipoNuevo" class="form-control form-control-lg" required />
+                    @Html.ValidationMessage("tipoNuevo")
+                </div>
+                <button type="submit" class="btn btn-success" onclick="agregarNuevoTipo();"><i class="bi bi-box-arrow-down"> Guardar</i></button>
+                <a class="btn btn-secondary" data-dismiss="modal" onclick="$('#modalNuevoTipoProducto').modal('hide');listarTipos();"><i class="bi bi-box-arrow-down-left"> Regresar</i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    agregarNuevoTipo = function () {
+        $.post(
+            '/Almacen/AgregarTipoProducto', {
+            tipoNuevo: $('#tipoNuevo').val()//en este caso sería código
+        }, function (res) {
+            $('#respuestaTipo').html(res);
+        });
+    };
+</script>

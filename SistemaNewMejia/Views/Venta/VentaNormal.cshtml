@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Venta Normal";
+}
+
+<section>
+    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.res</b></div>
+</section>
+<div class="container">
+    <form class="form-control" action="/Ventas/VentaNormal" method="post">
+        <div class="row">
+            <section class="col-md-6" aria-labelledby="gettingStartedTitle">
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="cliente">Cliente: </label>
+                    <input type="text" name="cliente" id="cliente" class="form-control form-control-lg" />
+                    @Html.ValidationMessage("cliente")
+                </div>
+                <div class="form-outline mb-4">
+                    <span>Seleccione Tipo de Pago:</span>
+                    <a class="btn" data-dismiss="modal" onclick="$('#agregarNuevoTipodePago').modal('show');"><i class="bi bi-plus-circle"></i></a>
+                    <select class="form-select" name="tipoPago" id="tipoPago" required>
+                    </select>
+                </div>
+            </section>
+            <section class="col-md-6" aria-labelledby="gettingStartedTitle">
+                <div class="form-outline mb-4">
+                    <span>Seleccione Tipo de Comprobante:</span>
+                    <a class="btn" data-dismiss="modal" onclick="$('#agregarNuevoTipodeComprobante').modal('show');"><i class="bi bi-plus-circle"></i></a>
+                    <select class="form-select" name="tipoComprobante" id="tipoComprobante">
+                    </select>
+                </div>
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="cliente">Número de Comprobante: </label>
+                    <input type="text" name="nroComprobante" id="nroComprobante" class="form-control form-control-lg" />
+                    @Html.ValidationMessage("cliente")
+                </div>
+            </section>
+        </div>
+        <div class="row">
+            <hr />
+            <h3 style="text-align:center"> PRODUCTOS </h3>
+            <br />
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <span>
+                    <input class="" type="text" name="buscarProducto" id="buscarProducto" />
+                    <button type="button" class="btn btn-outline-dark" onclick="buscarProductos();"><i class="bi bi-search"> Buscar</i></button>
+                </span>
+            </section>
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <span>
+                    Filtrar por:
+                    <select name="idTipo" id="idTipo">
+                    </select>
+                    <button type="button" class="btn btn-outline-dark" onclick="filtrarProductos();"><i class="bi bi-funnel"> Filtrar</i></button>
+                </span>
+            </section>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Aceite Repsol</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Aceite Vistony</h5>
+                            <p class="card-text">This is a short card.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Grasa Vystony</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <hr />
+            <h3 style="text-align: center"> RESUMEN </h3>
+            <br />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Descripción Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Descuento</th>
+                        <th>Precio Final</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="productosVenta">
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down">Guardar</i></button>
+        <a class="btn btn-secondary" data-dismiss="modal" onclick="$('#agregarNuevoProducto').modal('hide');"><i class="bi bi-box-arrow-down-left">Regresar</i></a>
+    </form>
+</div>

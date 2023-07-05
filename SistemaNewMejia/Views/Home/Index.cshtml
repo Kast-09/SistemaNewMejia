@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Grifo New Mejía";
+}
+
+<main>
+    <section class="row" aria-labelledby="aspnetTitle" style="text-align:center">
+        <h1 class="card-title" id="tituloIndex">Bienvenidos</h1>
+    </section><br />
+    <div class="row" style="display:flex; flex-direction: row; align-items:center; justify-content: space-evenly; flex-wrap: wrap;">
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle" style="text-align:center; align-items:center">
+            <a class="btn btn-outline-dark" style="width:200px; height:200px" onclick="filtrarProductos();" href="/Almacen/Index"><img src="~/Imagenes/almacen.png" alt="Imagen Ventas" style="width: 100%; height: 150px" /><br />Almacén</a>
+        </section>
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle" style="text-align:center; align-items:center">
+            <a class="btn btn-outline-dark" style="width:200px; height:200px" href="/Venta/Index"><img src="~/Imagenes/ventas.png" alt="Imagen Ventas" style="width: 100%; height: 150px" /><br />Ventas</a>
+        </section>
+       @* <section class="col-md-4" aria-labelledby="gettingStartedTitle" style="text-align:center; align-items:center">
+            <a class="btn btn-outline-dark" style="width:200px; height:200px" href="/Vales/Index"><img src="~/Imagenes/vales.png" alt="Imagen Ventas" style="width: 100%; height: 150px" /><br />Vales</a>
+        </section>*@
+    </div>
+    <br /><br />
+</main>

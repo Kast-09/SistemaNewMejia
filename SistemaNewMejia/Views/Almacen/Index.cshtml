@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Almacén";
+}
+
+<section>
+    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.res</b></div>
+</section>
+<hr />
+<main>
+    <div class="row" style="align-items:center">
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+            <button class="btn btn-outline-dark" onclick="$('#agregarNuevoProducto').modal('show');" id="btnAgregarProducto">
+                <i class="bi bi-file-plus-fill"> Agregar Producto</i>
+            </button>
+        </section>
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+            <span>
+                <input class="" type="text" name="buscarProducto" id="buscarProducto" />
+                <button type="button" class="btn btn-outline-dark" onclick="buscarProductos();"><i class="bi bi-search"> Buscar</i></button>
+            </span>
+        </section>
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+            <span>
+                Filtrar por:
+                <select name="idTipo" id="idTipo">
+                </select>
+                <button type="button" class="btn btn-outline-dark" onclick="filtrarProductos();"><i class="bi bi-funnel"> Filtrar</i></button>
+            </span>
+        </section>
+    </div>
+    <hr />
+    <div class="container" style="align-items:center">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nombre Producto</th>
+                    <th>Presentación</th>
+                    <th>Contenido</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            @{
+                int cont = 1;
+            }
+            <tbody id="tablaProductos">
+                @foreach (var i in (List<Producto>)Model)
+                {
+                    <tr>
+                        <td>@cont</td>
+                        <td>@i.NombreProducto</td>
+                        <td>@i.PresentacionProducto.NombrePresentacion</td>
+                        <td>@i.Contenido @i.UnidadMedida</td>
+                        <td>@i.Cantidad</td>
+                        <td>@i.Precio</td>
+                        <td style="text-align:center">
+                            <a class="btn btn-outline-dark" id="btnVerDetalle" name="btnVerDetalle" href="/Almacen/EditarProducto?idProducto=@i.Id"><i class="bi bi-pencil-square"> Editar Producto</i></a>
+                        </td>
+                    </tr>
+                    cont++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        listarTipoProductos = function () {
+            $.post(
+                '/Almacen/listarTiposProducto', {
+
+            }, function (res) {
+                $('#idTipo').html(res)
+            });
+        };
+
+        buscarProductos = function () {
+            $.post(
+                '/Almacen/busquedaProducto', {
+                nombreProducto: $('#buscarProducto').val()//en este caso sería código
+            }, function (res) {
+                $('#tablaProductos').html(res);
+            });
+        };
+
+        filtrarProductos = function () {
+            $.post(
+                '/Almacen/filtrarProducto', {
+                idTipo: $('#idTipo').val()//en este caso sería código
+            }, function (res) {
+                $('#tablaProductos').html(res);
+            });
+        };
+        //window.onload(filtrarProductos());
+        window.onload(listarTipoProductos());
+    </script>
+</main>
+
+@Html.Partial("_AgregarNuevoProducto")
+

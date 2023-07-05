@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Cesta";
+}
+
+<section>
+    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.res</b></div>
+</section>
+<hr />
+<main>
+    <div class="container" style="align-items:center">
+        <a href="/Venta/Vender" class="btn btn-success"> Vender </a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad a vender</th>
+                </tr>
+            </thead>
+            @{
+                int cont = 1;
+            }
+            <tbody id="tablaProductos">
+                @foreach (var i in (List<Producto>)Model)
+                {
+                    <tr>
+                        <td>@cont</td>                    
+                        <td>@i.NombreProducto / @i.Contenido @i.UnidadMedida</td>
+                        <td>@i.Precio</td>
+                        <td>@i.Cantidad</td>
+                    </tr>                
+                    cont++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        listarTipoProductos = function () {
+            $.post(
+                '/Almacen/listarTiposProducto', {
+
+            }, function (res) {
+                $('#idTipo').html(res)
+            });
+        };
+
+        buscarProductos = function () {
+            $.post(
+                '/Almacen/busquedaProducto', {
+                nombreProducto: $('#buscarProducto').val()//en este caso sería código
+            }, function (res) {
+                $('#tablaProductos').html(res);
+            });
+        };
+
+        filtrarProductos = function () {
+            $.post(
+                '/Almacen/filtrarProducto', {
+                idTipo: $('#idTipo').val()//en este caso sería código
+            }, function (res) {
+                $('#tablaProductos').html(res);
+            });
+        };
+        //window.onload(filtrarProductos());
+        window.onload(listarTipoProductos());
+    </script>
+</main>

@@ -1,0 +1,46 @@
+﻿<div id="modalRegistrarProducto" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:black;">
+                <h4 class="modal-title" style="color:white">Registrar Nueva Clase de Producto</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-control" action="/Almacen/Index" method="post">
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="nombreProducto">Nombre Producto: </label>
+                        <input type="text" name="nombreProducto" id="nombreProducto" class="form-control form-control-lg" required />
+                        @Html.ValidationMessage("nombreProducto")
+                    </div>
+                    <div class="mb-3">
+                        <label>Tipo de Producto: </label>
+                        <a class="btn" onclick="$('#modalNuevaClaseProducto').modal('show');">
+                            <i class="bi bi-plus-circle"></i>
+                        </a>
+                        <select class="form-select" name="clasificacionProducto" id="clasificacionProducto" required>
+                        </select>
+                        @Html.ValidationMessage("clasificacionProducto")
+                    </div>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down"> Guardar</i></button>
+                    <a class="btn btn-secondary" data-dismiss="modal" onclick="$('#modalRegistrarProducto').modal('hide');"><i class="bi bi-box-arrow-down-left"> Regresar</i></a>
+                </form>
+            </div>
+            <div class="modal-footer" style="align-items:end">
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_ModalNuevaClaseProducto")
+
+<script>
+    listarTipos = function () {
+        $.post(
+            '/Almacen/listarTiposProducto', {
+
+        }, function (res) {
+            $('#clasificacionProducto').html(res)
+        });
+    };
+
+    window.onload = listarTipos();
+</script>

@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Editar Producto";
+}
+
+<section>
+    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.res</b></div>
+</section>
+<hr />
+<div class="container">
+    <form class="form-control" action="/Almacen/EditarProducto?id=@Model.Id" method="post">
+        <div class="form-outline mb-4">
+            <label class="form-label" for="nombreProducto">Nombre del Producto</label>
+            <input type="text" name="nombreProducto" id="nombreProducto" class="form-control form-control-lg" value="@Model.NombreProducto" required />
+            @Html.ValidationMessage("nombreProducto")
+        </div>
+        <div class="form-outline mb-4">
+            <span>Seleccione Presentación:</span>
+            <a class="btn" data-dismiss="modal" onclick="$('#agregarNuevaPresentacion').modal('show');"><i class="bi bi-plus-circle"></i></a>
+            <select class="form-select" name="presentacionesProducto" id="presentacionesProducto" required>
+            </select>
+        </div>
+        <div class="form-outline mb-4">
+            @if (Model.VenderMenudeo == true)
+            {
+                @Html.CheckBox("venderMenudeo", true)
+
+                <span> Vender al menudeo</span>
+            }
+            else
+            {
+                @Html.CheckBox("venderMenudeo", false)
+
+                <span> Vender al menudeo</span>
+            }
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="contenidoNeto">Contenido Neto Producto</label>
+            <input type="number" name="contenidoNeto" id="contenidoNeto" class="form-control form-control-lg" value="@Model.Contenido" min="0" step="0.01" required />
+            @Html.ValidationMessage("contenidoNeto")
+        </div>
+        <div class="form-outline mb-4">
+            <span>Seleccione Unidad:</span>
+            <select class="form-select" name="unidadMedida" id="unidadMedida" required>
+                @switch (Model.UnidadMedida)
+                {
+                    case "ml":
+                        <option value="">Seleccione</option>
+                        <option value="ml" selected>Mililitro (ml)</option>
+                        <option value="lt">Litro (lt)</option>
+                        <option value="gl">Galón (gl)</option>
+                        ; break;
+                    case "lt":
+                        <option value="">Seleccione</option>
+                        <option value="ml">Mililitro (ml)</option>
+                        <option value="lt" selected>Litro (lt)</option>
+                        <option value="gl">Galón (gl)</option>
+                        ; break;
+                    case "gl":
+                        <option value="">Seleccione</option>
+                        <option value="ml">Mililitro (ml)</option>
+                        <option value="lt">Litro (lt)</option>
+                        <option value="gl" selected>Galón (gl)</option>
+                        ; break;
+                    default:
+                        <option value="">Seleccione</option>
+                        <option value="ml">Mililitro (ml)</option>
+                        <option value="lt">Litro (lt)</option>
+                        <option value="gl">Galón (gl)</option>
+                        ; break;
+
+                }
+            </select>
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="cantidadProducto">Cantidad Actual: </label>
+            <input type="number" name="cantidadActualProducto" id="cantidadActualProducto" class="form-control form-control-lg" value="@Model.Cantidad" min="0" step="0.01" readonly />
+            @Html.ValidationMessage("cantidadActualProducto")
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="cantidadProducto">Cantidad a Agregar: </label>
+            <input type="number" name="cantidadNueva" id="cantidadNueva" class="form-control form-control-lg" min="0" step="0.01" required />
+            @Html.ValidationMessage("cantidadNuevaProducto")
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="precioProducto">Precio Producto: </label>
+            <input type="number" name="precioProducto" id="precioProducto" class="form-control form-control-lg" value="@Model.Precio" min="0" step="0.01" required />
+            @Html.ValidationMessage("precioProducto")
+        </div>
+        <div class="mb-3">
+            <label>Tipo de Producto: </label>
+            <a class="btn" onclick="$('#modalNuevoTipoProducto').modal('show');">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+            <select class="form-select" name="clasificacionProducto" id="clasificacionProducto" required>
+            </select>
+            @Html.ValidationMessage("clasificacionProducto")
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down"> Guardar</i></button>
+        <a class="btn btn-secondary" href="/Almacen/Index"><i class="bi bi-box-arrow-down-left"> Regresar</i></a>
+    </form>
+</div>
+
+@Html.Partial("_AgregarNuevaPresentacion")
+@Html.Partial("_ModalNuevoTipoProducto")
+
+<script>
+    listarPresentacionProducto = function () {
+        $.post(
+            '/Almacen/listarPresentacionesProductos', {
+
+        }, function (res) {
+            $('#presentacionesProducto').html(res)
+        });
+    };
+
+    listarTipos = function () {
+        $.post(
+            '/Almacen/listarTiposProducto', {
+
+        }, function (res) {
+            $('#clasificacionProducto').html(res)
+        });
+    };
+
+    window.onload = listarTipos();
+    window.onload = listarPresentacionProducto();
+</script>

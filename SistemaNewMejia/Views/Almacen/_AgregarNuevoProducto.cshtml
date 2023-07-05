@@ -1,0 +1,89 @@
+﻿<div id="agregarNuevoProducto" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:black;">
+                <h4 class="modal-title" style="color:white">Agregar Producto</h4>
+                <h5></h5>
+            </div>
+            <div class="modal-body">
+                <form class="form-control" action="/Almacen/Index" method="post">
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="nombreProducto">Nombre del Producto</label>
+                        <input type="text" name="nombreProducto" id="nombreProducto" class="form-control form-control-lg" required />
+                        @Html.ValidationMessage("nombreProducto")
+                    </div>
+                    <div class="form-outline mb-4">
+                        <span>Seleccione Presentación:</span>
+                        <a class="btn" data-dismiss="modal" onclick="$('#agregarNuevaPresentacion').modal('show');"><i class="bi bi-plus-circle"></i></a>
+                        <select class="form-select" name="presentacionesProducto" id="presentacionesProducto" required>
+                        </select>
+                    </div>
+                    <div class="form-outline mb-4">
+                        @Html.CheckBox("venderMenudeo", false)<span>Vender al menudeo</span>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="contenidoNeto">Contenido Neto Producto</label>
+                        <input type="number" name="contenidoNeto" id="contenidoNeto" class="form-control form-control-lg" min="0" step="0.01" required />
+                        @Html.ValidationMessage("contenidoNeto")
+                    </div>
+                    <div class="form-outline mb-4">
+                        <span>Seleccione Unidad:</span>
+                        <select class="form-select" name="unidadMedida" id="unidadMedida" required>
+                            <option value="">Seleccione</option>
+                            <option value="ml">Mililitro (ml)</option>
+                            <option value="lt">Litro (lt)</option>
+                            <option value="gl">Galón (gl)</option>
+                        </select>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="cantidadProducto">Cantidad Producto: </label>
+                        <input type="number" name="cantidadProducto" id="cantidadProducto" class="form-control form-control-lg" min="0" step="0.01" required />
+                        @Html.ValidationMessage("cantidadProducto")
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="precioProducto">Precio Producto: </label>
+                        <input type="number" name="precioProducto" id="precioProducto" class="form-control form-control-lg" min="0" step="0.01" required />
+                        @Html.ValidationMessage("precioProducto")
+                    </div>
+                    <div class="mb-3">
+                        <label>Tipo de Producto: </label>
+                        <a class="btn" onclick="$('#modalNuevoTipoProducto').modal('show');">
+                            <i class="bi bi-plus-circle"></i>
+                        </a>
+                        <select class="form-select" name="clasificacionProducto" id="clasificacionProducto" required>
+                        </select>
+                        @Html.ValidationMessage("clasificacionProducto")
+                    </div>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down"> Guardar</i></button>
+                    <a class="btn btn-secondary" data-dismiss="modal" onclick="$('#agregarNuevoProducto').modal('hide');"><i class="bi bi-box-arrow-down-left"> Regresar</i></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_AgregarNuevaPresentacion")
+@Html.Partial("_ModalNuevoTipoProducto")
+
+<script>
+    listarPresentacionProducto = function () {
+        $.post(
+            '/Almacen/listarPresentacionesProductos', {
+
+        }, function (res) {
+            $('#presentacionesProducto').html(res)
+        });
+    };
+
+    listarTipos = function () {
+        $.post(
+            '/Almacen/listarTiposProducto', {
+
+        }, function (res) {
+            $('#clasificacionProducto').html(res)
+        });
+    };
+
+    window.onload = listarTipos();
+    window.onload = listarPresentacionProducto();
+</script>
