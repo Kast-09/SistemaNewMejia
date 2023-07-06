@@ -64,7 +64,7 @@ namespace SistemaNewMejia.Controllers
             int cont = 0;
             foreach (Producto producto in productos)
             {
-                producto.Cantidad = (decimal)cantProductos[cont];
+                producto.Cantidad = (float)cantProductos[cont];
             }
             return View(productos);
         }
@@ -83,7 +83,7 @@ namespace SistemaNewMejia.Controllers
             foreach (int i in idsProductos)
             {
                 productoAux = productoRepositorio.listarProducto(i);
-                productoAux.Cantidad = (decimal)cantProductos[cont];
+                productoAux.Cantidad = (float)cantProductos[cont];
                 DetalleVenta detalleVenta = new DetalleVenta();
                 detalleVenta.Id = numDetalleVenta;
                 detalleVenta.IdProducto = productoAux.Id;
@@ -92,7 +92,7 @@ namespace SistemaNewMejia.Controllers
                 detalleVenta.PrecioProducto = productoAux.Precio;
                 detalleVenta.Descuento = 0;
                 detalleVenta.IdTipoDescuento = 1;
-                detalleVenta.PrecioFinal = productoAux.Precio * productoAux.Cantidad;
+                detalleVenta.PrecioFinal = productoAux.Precio * (decimal)productoAux.Cantidad;
                 detalleVentas.Add(detalleVenta);
                 numDetalleVenta++;
             }

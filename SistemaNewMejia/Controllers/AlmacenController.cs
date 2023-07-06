@@ -29,7 +29,7 @@ namespace SistemaNewMejia.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string nombreProducto, decimal precioProducto, decimal cantidadProducto, decimal contenidoNeto,
+        public IActionResult Index(string nombreProducto, decimal precioProducto, float cantidadProducto, float contenidoNeto,
             int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, string unidadMedida)
         {
             Producto producto = new Producto();
@@ -115,8 +115,8 @@ namespace SistemaNewMejia.Controllers
                 int id = cont;
                 string nombreP = a.NombreProducto;
                 decimal precio = a.Precio;
-                decimal cantidad = a.Cantidad;
-                decimal contenido = a.Contenido;
+                float cantidad = a.Cantidad;
+                float contenido = a.Contenido;
                 int idPresentacion = a.IdPresentacionProducto;
                 string unidadMedida = a.UnidadMedida;
                 string botonSeleccionado = "<a class=\"btn btn-outline-dark\" id=\"btnVerDetalle\" name=\"btnVerDetalle\" " +
@@ -147,8 +147,8 @@ namespace SistemaNewMejia.Controllers
                 int id = a.Id;
                 string nombreP = a.NombreProducto;
                 decimal precio = a.Precio;
-                decimal cantidad = a.Cantidad;
-                decimal contenido = a.Contenido;
+                float cantidad = a.Cantidad;
+                float contenido = a.Contenido;
                 int idPresentacion = a.IdPresentacionProducto;
                 string unidadMedida = a.UnidadMedida;
                 string botonSeleccionado = "<a class=\"btn btn-outline-dark\" id=\"btnVerDetalle\" name=\"btnVerDetalle\" " +
@@ -175,11 +175,11 @@ namespace SistemaNewMejia.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditarProducto(int id, string nombreProducto, decimal precioProducto, decimal cantidadNueva, decimal contenidoNeto,
+        public IActionResult EditarProducto(int id, string nombreProducto, decimal precioProducto, float cantidadNueva, float contenidoNeto,
             int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, string unidadMedida)
         {
             Producto productoTemp = productoRepositorio.listarProducto(id);
-            decimal cantidadTemp = productoTemp.Cantidad + cantidadNueva;
+            float cantidadTemp = productoTemp.Cantidad + cantidadNueva;
             Producto producto = new Producto();
             producto.NombreProducto = nombreProducto;
             producto.Precio = precioProducto;
