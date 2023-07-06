@@ -64,7 +64,7 @@ namespace SistemaNewMejia.Controllers
             int cont = 0;
             foreach (Producto producto in productos)
             {
-                producto.Cantidad = (float)cantProductos[cont];
+                producto.Cantidad = cantProductos[cont];
             }
             return View(productos);
         }
@@ -74,7 +74,7 @@ namespace SistemaNewMejia.Controllers
         {
             Venta venta = new Venta();
             venta.Id = numVenta;
-            DateTime thisDay = DateTime.Today;
+            DateTime thisDay = DateTime.Now;
             venta.IdNombreTipoPago = 1;
             venta.Fecha = thisDay;
             ventas.Add(venta);

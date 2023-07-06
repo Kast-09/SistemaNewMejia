@@ -84,5 +84,6 @@ hr.h-color {
     #content-body {
         position: absolute;
         left: 0px;
+        width: 100%;
     }
 }

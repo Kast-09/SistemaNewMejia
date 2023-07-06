@@ -15,7 +15,7 @@
         </div>
         <div class="form-outline mb-4">
             <span>Seleccione Presentación:</span>
-            <a class="btn" data-dismiss="modal" onclick="$('#agregarNuevaPresentacion').modal('show');"><i class="bi bi-plus-circle"></i></a>
+            <a class="btn" data-dismiss="modal" href="/DetalleProductos/Presentaciones"><i class="bi bi-plus-circle"></i></a>
             <select class="form-select" name="presentacionesProducto" id="presentacionesProducto" required>
             </select>
         </div>
@@ -40,35 +40,8 @@
         </div>
         <div class="form-outline mb-4">
             <span>Seleccione Unidad:</span>
+            <a class="btn" data-dismiss="modal" href="/DetalleProductos/UnidadesMedida"><i class="bi bi-plus-circle"></i></a>
             <select class="form-select" name="unidadMedida" id="unidadMedida" required>
-                @switch (Model.UnidadMedida)
-                {
-                    case "ml":
-                        <option value="">Seleccione</option>
-                        <option value="ml" selected>Mililitro (ml)</option>
-                        <option value="lt">Litro (lt)</option>
-                        <option value="gl">Galón (gl)</option>
-                        ; break;
-                    case "lt":
-                        <option value="">Seleccione</option>
-                        <option value="ml">Mililitro (ml)</option>
-                        <option value="lt" selected>Litro (lt)</option>
-                        <option value="gl">Galón (gl)</option>
-                        ; break;
-                    case "gl":
-                        <option value="">Seleccione</option>
-                        <option value="ml">Mililitro (ml)</option>
-                        <option value="lt">Litro (lt)</option>
-                        <option value="gl" selected>Galón (gl)</option>
-                        ; break;
-                    default:
-                        <option value="">Seleccione</option>
-                        <option value="ml">Mililitro (ml)</option>
-                        <option value="lt">Litro (lt)</option>
-                        <option value="gl">Galón (gl)</option>
-                        ; break;
-
-                }
             </select>
         </div>
         <div class="form-outline mb-4">
@@ -88,7 +61,7 @@
         </div>
         <div class="mb-3">
             <label>Tipo de Producto: </label>
-            <a class="btn" onclick="$('#modalNuevoTipoProducto').modal('show');">
+            <a class="btn" href="/DetalleProductos/TiposProducto">
                 <i class="bi bi-plus-circle"></i>
             </a>
             <select class="form-select" name="clasificacionProducto" id="clasificacionProducto" required>
@@ -122,6 +95,16 @@
         });
     };
 
+    listarUnidadesMedida = function () {
+        $.post(
+            '/Almacen/listarUnidadeMediadaProductos', {
+
+        }, function (res) {
+            $('#unidadMedida').html(res)
+        });
+    };
+
     window.onload = listarTipos();
     window.onload = listarPresentacionProducto();
+    window.onload = listarUnidadesMedida();
 </script>

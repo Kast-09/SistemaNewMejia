@@ -3,7 +3,7 @@
 }
 
 <section>
-    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.res</b></div>
+    <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.respuesta</b></div>
 </section>
 <hr />
 <main>
@@ -52,7 +52,7 @@
                         <td>@cont</td>
                         <td>@i.NombreProducto</td>
                         <td>@i.PresentacionProducto.NombrePresentacion</td>
-                        <td>@i.Contenido @i.UnidadMedida</td>
+                        <td>@i.Contenido @i.UnidadesMedida.NombreUnidad</td>
                         <td>@i.Cantidad</td>
                         <td>@i.Precio</td>
                         <td style="text-align:center">

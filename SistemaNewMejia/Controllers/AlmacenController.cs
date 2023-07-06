@@ -11,26 +11,27 @@ namespace SistemaNewMejia.Controllers
         private readonly ITipoProductoRepositorio tipoProductoRepositorio;
         private readonly IProductoRepositorio productoRepositorio;
         private readonly IPresentacionProductoRepositorio presentacionProductoRepositorio;
+        private readonly IUnidadesMedidaRepositorio unidadesMedidaRepositorio;
 
-        public AlmacenController(DbEntities dbEntities, ITipoProductoRepositorio tipoProductoRepositorio, IProductoRepositorio productoRepositorio, IPresentacionProductoRepositorio presentacionProductoRepositorio)
+        public AlmacenController(DbEntities dbEntities, ITipoProductoRepositorio tipoProductoRepositorio, IProductoRepositorio productoRepositorio, IPresentacionProductoRepositorio presentacionProductoRepositorio, IUnidadesMedidaRepositorio unidadesMedidaRepositorio)
         {
             _dbEntities = dbEntities;
             this.tipoProductoRepositorio = tipoProductoRepositorio;
             this.productoRepositorio = productoRepositorio;
             this.presentacionProductoRepositorio = presentacionProductoRepositorio;
+            this.unidadesMedidaRepositorio = unidadesMedidaRepositorio;
         }
 
         public IActionResult Index()
         {
             ViewBag.alerta = "info";
-            ViewBag.res = "Productos Almacén";
-            var listarProductos = productoRepositorio.listar();
-            return View(listarProductos);
+            ViewBag.respuesta = "Productos Almacén";
+            return View(productoRepositorio.listar());
         }
 
         [HttpPost]
         public IActionResult Index(string nombreProducto, decimal precioProducto, float cantidadProducto, float contenidoNeto,
-            int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, string unidadMedida)
+            int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, int unidadMedida)
         {
             Producto producto = new Producto();
             producto.NombreProducto = nombreProducto;
@@ -40,10 +41,10 @@ namespace SistemaNewMejia.Controllers
             producto.IdPresentacionProducto = presentacionesProducto;
             producto.VenderMenudeo = venderMenudeo;
             producto.IdTipo = clasificacionProducto;
-            producto.UnidadMedida = unidadMedida;
+            producto.idUnidadMedida = unidadMedida;
             productoRepositorio.agregarProducto(producto);
             ViewBag.alerta = "success";
-            ViewBag.res = "Producto Registrado";
+            ViewBag.respuesta = "Producto Registrado";
             return View(productoRepositorio.listar());
         }
 
@@ -69,6 +70,18 @@ namespace SistemaNewMejia.Controllers
             foreach (var i in tipoProducto1)
             {
                 respuesta += "<option value=\"" + i.Id + "\">" + i.NombrePresentacion + "</option>";
+            }
+            return respuesta;
+        }
+
+        [HttpPost]
+        public String listarUnidadeMediadaProductos()
+        {
+            string respuesta = "<option value=\"\">Seleccione</option>";
+            var tipoProducto1 = unidadesMedidaRepositorio.listar();
+            foreach (var i in tipoProducto1)
+            {
+                respuesta += "<option value=\"" + i.Id + "\">" + i.NombreUnidad + "</option>";
             }
             return respuesta;
         }
@@ -104,21 +117,20 @@ namespace SistemaNewMejia.Controllers
         }
 
         [HttpPost]
-        public String busquedaProducto(string nombreProducto)
+        public string busquedaProducto(string nombreProducto)
         {
             string res = "";
-            var productos = new List<Producto>();
-            productos = productoRepositorio.buscarProductos(nombreProducto);
+            var productos = productoRepositorio.buscarProductos(nombreProducto);
             int cont = 1;
             foreach (var a in productos)
             {
                 int id = cont;
                 string nombreP = a.NombreProducto;
                 decimal precio = a.Precio;
-                float cantidad = a.Cantidad;
-                float contenido = a.Contenido;
+                double cantidad = a.Cantidad;
+                double contenido = a.Contenido;
                 int idPresentacion = a.IdPresentacionProducto;
-                string unidadMedida = a.UnidadMedida;
+                string unidadMedida = a.UnidadesMedida.NombreUnidad;
                 string botonSeleccionado = "<a class=\"btn btn-outline-dark\" id=\"btnVerDetalle\" name=\"btnVerDetalle\" " +
                     "href=\"/Almacen/EditarProducto?idProducto=@i.Id\">" +
                     "<i class=\"bi bi-pencil-square\"> Editar Producto</i></a>";
@@ -137,31 +149,62 @@ namespace SistemaNewMejia.Controllers
         }
 
         [HttpPost]
-        public String filtrarProducto(int idTipo)
+        public string filtrarProducto(int idTipo)
         {
             string res = "";
-            var productos = new List<Producto>();
-            productos = productoRepositorio.filtrarProductos(idTipo);
+            var productos = productoRepositorio.filtrarProductos(idTipo);
+            int cont = 1;
             foreach (var a in productos)
             {
                 int id = a.Id;
                 string nombreP = a.NombreProducto;
                 decimal precio = a.Precio;
-                float cantidad = a.Cantidad;
-                float contenido = a.Contenido;
+                double cantidad = a.Cantidad;
+                double contenido = a.Contenido;
                 int idPresentacion = a.IdPresentacionProducto;
-                string unidadMedida = a.UnidadMedida;
+                string unidadMedida = a.UnidadesMedida.NombreUnidad;
                 string botonSeleccionado = "<a class=\"btn btn-outline-dark\" id=\"btnVerDetalle\" name=\"btnVerDetalle\" " +
-                    "href=\"/Almacen/EditarProducto?idProducto=@i.Id\">" +
+                    "href=\"/Almacen/EditarProducto?idProducto="+a.Id+"\">" +
                     "<i class=\"bi bi-pencil-square\"> Editar Producto</i></a>";
                 res = res +
-                    "<tr><td>" + id + "</td>"
+                    "<tr><td>" + cont + "</td>"
                     + "<td>" + nombreP + "</td>"
                     + "<td>" + idPresentacion + "</td>"
                     + "<td>" + contenido + " " + unidadMedida + "</td>"
                     + "<td>" + cantidad + "</td>"
                     + "<td>" + precio + "</td>"
                     + "<td style=\"text-align:center\">" + botonSeleccionado + "</td></tr>";
+                cont++;
+            }
+            return res;
+        }
+
+        [HttpPost]
+        public string filtrarProductoVenta(int idTipo)
+        {
+            string res = "";
+            var productos = productoRepositorio.filtrarProductos(idTipo);
+            int cont = 1;
+            foreach (var a in productos)
+            {
+                res = res +
+                    "<tr>" +
+                    "<form action=\"/Venta/Index?Id=" + a.Id + "\" method=\"post\">" +
+                    "<td>" + cont + "</td>" +
+                    "<td>" + a.NombreProducto + "</td>" +
+                    "<td>" + a.PresentacionProducto.NombrePresentacion + "</td>" +
+                    "<td>" + a.Contenido + " " + a.UnidadesMedida.NombreUnidad + "</td>" +
+                    "<td>"+a.Cantidad+"</td>" +
+                    "<td>"+a.Precio+"</td>" +
+                    "<td>" +
+                    "<input type=\"number\" id=\"cantidad\" name=\"cantidad\" min=\"1.00\" max=\"100.00\" required>" +
+                    "</td>" +
+                    "<td style=\"text-align:center\">" +
+                    "<button class=\"btn btn-success\" type=\"submit\">Agregar a la cesta</button>" +
+                    "</td>" +
+                    "</form>" +
+                    "</tr>";
+                cont++;
             }
             return res;
         }
@@ -175,11 +218,11 @@ namespace SistemaNewMejia.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditarProducto(int id, string nombreProducto, decimal precioProducto, float cantidadNueva, float contenidoNeto,
-            int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, string unidadMedida)
+        public IActionResult EditarProducto(int id, string nombreProducto, decimal precioProducto, double cantidadNueva, double contenidoNeto,
+            int presentacionesProducto, bool venderMenudeo, int clasificacionProducto, int unidadMedida)
         {
             Producto productoTemp = productoRepositorio.listarProducto(id);
-            float cantidadTemp = productoTemp.Cantidad + cantidadNueva;
+            double cantidadTemp = productoTemp.Cantidad + cantidadNueva;
             Producto producto = new Producto();
             producto.NombreProducto = nombreProducto;
             producto.Precio = precioProducto;
@@ -188,7 +231,7 @@ namespace SistemaNewMejia.Controllers
             producto.IdPresentacionProducto = presentacionesProducto;
             producto.VenderMenudeo = venderMenudeo;
             producto.IdTipo = clasificacionProducto;
-            producto.UnidadMedida = unidadMedida;
+            producto.idUnidadMedida = unidadMedida;
             productoRepositorio.editarProducto(id, producto);
             ViewBag.alerta = "success";
             ViewBag.res = "Producto Editado";

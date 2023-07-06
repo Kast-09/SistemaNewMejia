@@ -16,6 +16,7 @@ namespace SistemaNewMejia.DB
         public DbSet<TipoDescuento> TipoDescuentos { get; set; }
         public DbSet<TipoPago> TipoPagos { get; set; }
         public DbSet<TipoProducto> TipoProductos { get; set; }
+        public DbSet<UnidadesMedida> UnidadesMedidas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Vale> Vales { get; set; }
         public DbSet<Venta> Ventas { get; set; }
@@ -36,6 +37,7 @@ namespace SistemaNewMejia.DB
             modelBuilder.ApplyConfiguration(new TipoPagoMapping());
             modelBuilder.ApplyConfiguration(new TipoProductoMapping());
             modelBuilder.ApplyConfiguration(new UsuarioMapping());
+            modelBuilder.ApplyConfiguration(new UnidadesMedidaMapping());
             modelBuilder.ApplyConfiguration(new ValeMapping());
             modelBuilder.ApplyConfiguration(new VentaMapping());
         }

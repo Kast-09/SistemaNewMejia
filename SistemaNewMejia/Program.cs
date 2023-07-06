@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaNewMejia.DB;
+using SistemaNewMejia.Models;
 using SistemaNewMejia.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder.Services.AddTransient<ITipoComprobanteRepositorio, TipoComprobanteReposi
 builder.Services.AddTransient<ITipoDescuentoRepositorio, TipoDescuentoRepositorio>();
 builder.Services.AddTransient<ITipoPagoRepositorio, TipoPagoRepositorio>();
 builder.Services.AddTransient<ITipoProductoRepositorio, TipoProductoRepositorio>();
+builder.Services.AddTransient<IUnidadesMedidaRepositorio, UnidadesMedidaRepositorio>();
 builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddTransient<IValeRepositorio, ValeRepositorio>();
 builder.Services.AddTransient<VentaRepositorio, VentaRepositorio>();

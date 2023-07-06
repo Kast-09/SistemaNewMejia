@@ -49,11 +49,11 @@
                             <td>@cont</td>
                             <td>@i.NombreProducto</td>
                             <td>@i.PresentacionProducto.NombrePresentacion</td>
-                            <td>@i.Contenido @i.UnidadMedida</td>
+                            <td>@i.Contenido @i.UnidadesMedida.NombreUnidad</td>
                             <td>@i.Cantidad</td>
                             <td>@i.Precio</td>
                             <td>
-                            <input type="number" id="cantidad" name="cantidad" min="1.00" max="100.00">
+                            <input type="number" id="cantidad" name="cantidad" min="1.00" max="100.00" required>
                             </td>
                             <td style="text-align:center">
                                 <button class="btn btn-success" type="submit">Agregar a la cesta</button>
@@ -86,7 +86,7 @@
 
         filtrarProductos = function () {
             $.post(
-                '/Almacen/filtrarProducto', {
+                '/Almacen/filtrarProductoVenta', {
                 idTipo: $('#idTipo').val()//en este caso sería código
             }, function (res) {
                 $('#tablaProductos').html(res);

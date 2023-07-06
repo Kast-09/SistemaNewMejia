@@ -1,0 +1,53 @@
+﻿@model List<SistemaNewMejia.Models.UnidadesMedida>
+
+@{
+    ViewBag.Title = "Unidades de medida";
+}
+
+<div class="container">
+    <h2 style="text-align:center;">Unidades de medida</h2><br />
+    <section>
+        <div class="alert alert-@ViewBag.alerta" style="text-align:center"><b>@ViewBag.respuesta</b></div>
+    </section>
+    <div class="container-fluid">
+        <h3>Agregar nuevo tipo</h3>
+        <form action="/DetalleProductos/UnidadesMedida" method="post">
+            <div class="form-outline mb-4">
+                <label class="form-label" for="unidadNueva">Ingrese nueva unidad: </label>
+                <input type="text" name="unidadNueva" id="unidadNueva" class="form-control form-control-lg" required />
+                @Html.ValidationMessage("unidadNueva")
+            </div>
+            <button type="submit" class="btn btn-success"><i class="bi bi-box-arrow-down"> Guardar</i></button>
+            <a class="btn btn-secondary"><i class="bi bi-box-arrow-down-left"> Regresar</i></a>
+        </form>
+    </div>
+    <br />
+    <div class="container-fluid">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Unidad</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int cont = 1;
+                }
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@cont</td>
+                        <td>@a.NombreUnidad</td>
+                        <td><a class="btn btn-outline-dark" href="#"><i class="bi bi-pencil-square"></i>Editar</a></td>
+                        @{
+                            cont++;
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

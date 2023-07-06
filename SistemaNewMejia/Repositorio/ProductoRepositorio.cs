@@ -31,7 +31,10 @@ namespace SistemaNewMejia.Repositorio
 
         public List<Producto> buscarProductos(string nombre)
         {
-            return _dbEntities.Productos.Where(o => o.NombreProducto.Contains(nombre, StringComparison.OrdinalIgnoreCase)).ToList();
+            return _dbEntities.Productos.Where(o => EF.Functions.Like(o.NombreProducto, $"%{nombre}%"))
+                .Include(o => o.UnidadesMedida)
+                .OrderBy(o => o.NombreProducto)
+                .ToList();
         }
 
         public void editarProducto(int id, Producto producto)
@@ -44,13 +47,16 @@ namespace SistemaNewMejia.Repositorio
             product.IdPresentacionProducto = producto.IdPresentacionProducto;
             product.VenderMenudeo = producto.VenderMenudeo;
             product.IdTipo = producto.IdTipo;
-            product.UnidadMedida = producto.UnidadMedida;
+            product.idUnidadMedida = producto.idUnidadMedida;
             _dbEntities.SaveChanges();
         }
 
         public List<Producto> filtrarProductos(int idTipo)
         {
-            return _dbEntities.Productos.Where(o => o.IdTipo == idTipo).ToList();
+            return _dbEntities.Productos
+                .Include(o => o.UnidadesMedida)
+                .Include(o => o.PresentacionProducto)
+                .Where(o => o.IdTipo == idTipo).ToList();
         }
 
         public void guardarCambios()
@@ -62,12 +68,16 @@ namespace SistemaNewMejia.Repositorio
         {
             return _dbEntities.Productos
                 .Include(o => o.PresentacionProducto)
+                .Include(o => o.UnidadesMedida)
                 .ToList();
         }
 
         public Producto listarProducto(int id)
         {
-            return _dbEntities.Productos.Where(o => o.Id == id).Single();
+            return _dbEntities.Productos
+                .Include(o => o.PresentacionProducto)
+                .Include(o => o.UnidadesMedida)
+                .Where(o => o.Id == id).Single();
         }
     }
 }

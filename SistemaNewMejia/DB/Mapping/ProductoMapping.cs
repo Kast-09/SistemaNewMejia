@@ -18,6 +18,10 @@ namespace SistemaNewMejia.DB.Mapping
             builder.HasOne(o => o.TipoProducto)
                 .WithMany()
                 .HasForeignKey(o => o.IdTipo);
+
+            builder.HasOne(o => o.UnidadesMedida)
+                .WithMany()
+                .HasForeignKey(o => o.idUnidadMedida);
         }
     }
 }
