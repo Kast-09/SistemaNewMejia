@@ -25,7 +25,7 @@ builder.Services.AddTransient<ITipoProductoRepositorio, TipoProductoRepositorio>
 builder.Services.AddTransient<IUnidadesMedidaRepositorio, UnidadesMedidaRepositorio>();
 builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddTransient<IValeRepositorio, ValeRepositorio>();
-builder.Services.AddTransient<VentaRepositorio, VentaRepositorio>();
+builder.Services.AddTransient<IVentaRepositorio, VentaRepositorio>();
 
 var app = builder.Build();
 

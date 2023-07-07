@@ -13,6 +13,7 @@ namespace SistemaNewMejia.Controllers
         private readonly ITipoProductoRepositorio tipoProductoRepositorio;
         private readonly IProductoRepositorio productoRepositorio;
         private readonly IPresentacionProductoRepositorio presentacionProductoRepositorio;
+        private readonly IVentaRepositorio ventaRepositorio;
 
         public static List<int> idsProductos = new List<int>();
         public static List<double> cantProductos = new List<double>();
@@ -23,12 +24,13 @@ namespace SistemaNewMejia.Controllers
         public static List<Venta> ventas = new List<Venta>();
         public static List<DetalleVenta> detalleVentas = new List<DetalleVenta>();
 
-        public VentaController(DbEntities dbEntities, ITipoProductoRepositorio tipoProductoRepositorio, IProductoRepositorio productoRepositorio, IPresentacionProductoRepositorio presentacionProductoRepositorio)
+        public VentaController(DbEntities dbEntities, ITipoProductoRepositorio tipoProductoRepositorio, IProductoRepositorio productoRepositorio, IPresentacionProductoRepositorio presentacionProductoRepositorio, IVentaRepositorio ventaRepositorio)
         {
             _dbEntities = dbEntities;
             this.tipoProductoRepositorio = tipoProductoRepositorio;
             this.productoRepositorio = productoRepositorio;
             this.presentacionProductoRepositorio = presentacionProductoRepositorio;
+            this.ventaRepositorio = ventaRepositorio;
         }
 
         [HttpGet]
@@ -73,13 +75,16 @@ namespace SistemaNewMejia.Controllers
         public IActionResult Vender()
         {
             Venta venta = new Venta();
-            venta.Id = numVenta;
+            //venta.Id = numVenta;
             DateTime thisDay = DateTime.Now;
             venta.IdNombreTipoPago = 1;
             venta.Fecha = thisDay;
+            venta.IdNombreTipoComprobante = 1;
             ventas.Add(venta);
+            ventaRepositorio.agregarVenta(venta);
             Producto productoAux = new Producto();
             int cont = 0;
+            int idVenta = ventaRepositorio.ultimaVenta().Id;
             foreach (int i in idsProductos)
             {
                 productoAux = productoRepositorio.listarProducto(i);
@@ -87,13 +92,14 @@ namespace SistemaNewMejia.Controllers
                 DetalleVenta detalleVenta = new DetalleVenta();
                 detalleVenta.Id = numDetalleVenta;
                 detalleVenta.IdProducto = productoAux.Id;
-                detalleVenta.IdVenta = numVenta;
+                detalleVenta.IdVenta = idVenta;
                 detalleVenta.Cantidad = (double)productoAux.Cantidad;
                 detalleVenta.PrecioProducto = productoAux.Precio;
                 detalleVenta.Descuento = 0;
                 detalleVenta.IdTipoDescuento = 1;
                 detalleVenta.PrecioFinal = productoAux.Precio * (decimal)productoAux.Cantidad;
                 detalleVentas.Add(detalleVenta);
+                ventaRepositorio.agregarDetalleVenta(detalleVenta);
                 numDetalleVenta++;
             }
             numVenta++;
